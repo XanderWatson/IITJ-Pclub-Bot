@@ -24,7 +24,7 @@ async def on_message(message):
     elif message.content.startswith(symbol + 'set'):
         content = message.content.split()
         if len(content) <= 1:
-            await message.channel.send('Please enter a symbol. Usage "<current symbol>set <new symbol>"')
+            await message.channel.send(f'Please enter a symbol. Usage "{symbol}set <new symbol>"')
         else:
             symbol = content[1]
             await message.channel.send(f'The new symbol has been set to "{symbol}"')
@@ -49,8 +49,21 @@ async def on_message(message):
         await message.channel.send(f'{pruned_members} members were pruned due to inactivity.')
         # await message.guild.prune_members(7) # Actually pruning members
 
+    elif message.content.startswith(symbol + 'role'):
+        content = message.content.split()
+        if len(content) <= 1:
+            await message.channel.send(f'Please specify a role. Usage "{symbol}role <name of role>"')
+        else:
+            role = content[1]
+            user = message.author
+            try:
+                await user.add_roles(discord.utils.get(user.guild.roles, name=role))
+                await message.channel.send(f'{message.author.mention} was given the role {role}')
+            except Exception as e:
+                await message.channel.send('Cannot assign role. Error: ' + str(e))
+
     elif message.content.startswith(symbol):  # A catchall.
         await message.channel.send('Hello This bot has been called v0.1.2')
 
 
-client.run('NzgxNTUzMjA4NzQ5MDY0MjIz.X7_UJQ.zIr5eOXcX4ebI4Jjcslduo-_PcA')
+client.run('NzgxNTUzMjA4NzQ5MDY0MjIz.X7_UJQ.6SbLYLLio7WpmHt7YhfPhXnpJ40')
