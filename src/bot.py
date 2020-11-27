@@ -66,4 +66,4 @@ async def on_message(message):
         await message.channel.send('Hello This bot has been called v1.0.0')
 
 
-client.run('NzgxNTUzMjA4NzQ5MDY0MjIz.X7_UJQ.ikfrcF1PvGKsHlYCnSfPU4yjCPE')
+client.run('')
