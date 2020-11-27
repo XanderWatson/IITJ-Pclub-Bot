@@ -63,7 +63,7 @@ async def on_message(message):
                 await message.channel.send('Cannot assign role. Error: ' + str(e))
 
     elif message.content.startswith(symbol):  # A catchall.
-        await message.channel.send('Hello This bot has been called v0.1.2')
+        await message.channel.send('Hello This bot has been called v1.0.0')
 
 
-client.run('')
+client.run('NzgxNTUzMjA4NzQ5MDY0MjIz.X7_UJQ.ikfrcF1PvGKsHlYCnSfPU4yjCPE')
