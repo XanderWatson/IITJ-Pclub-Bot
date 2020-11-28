@@ -1,6 +1,7 @@
 import discord
 import datetime
-import sql
+import utilities
+import time
 
 
 client = discord.Client()
@@ -12,9 +13,13 @@ symbol = '$'
 async def on_message(message):
 
     global symbol
+    guild = message.channel.guild
     message.content = message.content.lower()
     if message.author == client.user:
         return
+
+    if not message.content.startswith(symbol):
+        utilities.update_user_msg_count(message.author.id)
 
     # Sends a message with the current time
     if message.content.startswith(symbol + 'time'):
@@ -29,19 +34,18 @@ async def on_message(message):
             symbol = content[1]
             await message.channel.send(f'The new symbol has been set to "{symbol}"')
 
-    elif message.content.startswith(symbol + 'createdb'):
-
-        guild = message.channel.guild
-        await message.channel.send(f'There are {guild.member_count} members in the server. Creating a new table')
-
-        # Initialise table here
-        database = sql.Table('data', [
-                             ('id', 'INT'), ('tot_msg', 'INT'), ('marg_msg', 'INT'), ('score', 'REAL')])
-
+    elif message.content.startswith(symbol + 'syncdb'):
+        users = utilities.users
         for member in guild.members:
-            # member.name has the string value
-            # Add individual members here
-            database.add_element(member.id)
+            if users.get(member.id) is None:
+                utilities.add_user(member.id)
+
+        await message.channel.send(f'There are {guild.member_count} members in the server. DataBase Sync Complete')
+
+        # Start Prune Tasks for daily elimination
+        while True:
+            time.sleep(2)
+            print('ll')
 
     elif message.content.startswith(symbol + 'prune'):
         # This estimates how many members will be pruned
