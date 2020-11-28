@@ -1,14 +1,17 @@
 import discord
 import datetime
-import utilities
 import time
-
+import utilities
 
 client = discord.Client()
 
 symbol = '$'
 
 
+@client.event
+async def on_ready():
+    print(f'{client.user} has connected to Discord!')
+    
 @client.event
 async def on_message(message):
 
@@ -70,4 +73,4 @@ async def on_message(message):
         await message.channel.send('Hello This bot has been called v1.0.0')
 
 
-client.run('')
+client.run('NzgyMjgxMTU4NTMxNzQzNzY0.X8J6Gg.KQjohzbyVMSczgB1a-a09ut0W4I')

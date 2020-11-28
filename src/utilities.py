@@ -8,7 +8,7 @@ users = Table(db, 'users', [
     Column('tod_msg', 'INTEGER')
 ])
 
-total_msg = TABLE(db, 'total_msg', [
+total_msg = Table(db, 'total_msg', [
     Column('id', 'INTEGER'),
     Column('msg', 'INTEGER'),
     Column('tod_msg', 'INTEGER')
