@@ -5,17 +5,20 @@ import sqlite3
 def clean(string):
     return string.replace("'", '').replace('"', '')
 
+
 class Column:
-    def __init__(self, name, type , primary_key = False, not_null = True):
+    def __init__(self, name, type, primary_key=False, not_null=True):
         self.name = name
         self.type = type
         self.primary_key = primary_key
         self.not_null = not_null
-    
+
     def __str__(self):
         out = f'''{self.name} {self.type}'''
-        if self.primary_key: out +=  " PRIMARY KEY"
-        if self.not_null: out += " NOT NULL"
+        if self.primary_key:
+            out += " PRIMARY KEY"
+        if self.not_null:
+            out += " NOT NULL"
         return out
 
 
@@ -27,14 +30,13 @@ class Database:
 
 
 class Table:
-    def __init__(self,database, name , columns: list):
+    def __init__(self, database, name, columns: list):
         self.name = name
         self.columns = columns
         self.db = database
         try:
             self.db.c.execute(f'''SELECT * FROM {self.name}''')
-        except:
-            print(self.get_def())
+        except sqlite3.OperationalError:
             self.db.c.execute(f'''CREATE TABLE {self.name} ( {self.get_def()})''')
     
     def get_columns(self):
@@ -101,11 +103,11 @@ class Table:
                 ))
 
 
-db = Database('data.db')
+""" db = Database('data.db')
 user = Table(db, 'user',[
     Column('id', 'INTEGER'),
     Column('name', 'STRING')
-])
+]) """
 # user.add_element(1,{'name': "manav"})
 #print(user.get_all())
 #print(user.get(1,"name"))
