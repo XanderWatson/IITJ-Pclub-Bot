@@ -2,12 +2,26 @@ import discord
 import datetime
 import time
 import utilities
+import threading 
+import asyncio
 
 client = discord.Client()
 
 symbol = '$'
+async def time_deduct():
+    
+    deduct_at=datetime.time(23,15,0)
+    deduct_at_date=datetime.datetime.combine(datetime.date.today(),deduct_at)
+    await client.wait_until_ready()
 
+    while not client.is_closed():
+        now=datetime.datetime.now()
+        if deduct_at_date<=now:
+            deduct_at_date+= datetime.timedelta(days=1)
+            await utilities.score_server_deduct()
+        await asyncio.sleep(20)
 
+client.loop.create_task(time_deduct())
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
@@ -46,9 +60,9 @@ async def on_message(message):
         await message.channel.send(f'There are {guild.member_count} members in the server. DataBase Sync Complete')
 
         # Start Prune Tasks for daily elimination
-        while True:
-            time.sleep(2)
-            print('ll')
+        #while True:
+        #    time.sleep(2)
+        #    print('ll')
 
     elif message.content.startswith(symbol + 'prune'):
         # This estimates how many members will be pruned
@@ -68,9 +82,12 @@ async def on_message(message):
                 await message.channel.send(f'{message.author.mention} was given the role {role}')
             except Exception as e:
                 await message.channel.send('Cannot assign role. Error: ' + str(e))
-
+    elif message.content.startswith(symbol+'score'):
+        if utilities.users.get(message.author.id) is None:
+            utilities.add_user(message.author.id)
+        await message.channel.send(utilities.users.get(message.author.id,"score")[0])
     elif message.content.startswith(symbol):  # A catchall.
         await message.channel.send('Hello This bot has been called v1.0.0')
 
 
-client.run('NzgyMjgxMTU4NTMxNzQzNzY0.X8J6Gg.KQjohzbyVMSczgB1a-a09ut0W4I')
+client.run(' ')

@@ -93,7 +93,6 @@ class Table:
                 values
             )
         return values
-
     def delete(self, id_str):
 
         with self.db.conn:
