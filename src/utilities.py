@@ -5,7 +5,8 @@ users = Table(db, 'users', [
     Column('id', 'INTEGER'),
     Column('score', 'REAL'),
     Column('prev_msg', 'INTEGER'),
-    Column('tod_msg', 'INTEGER')
+    Column('tod_msg', 'INTEGER'),
+    Column('otp','INTEGER')
 ])
 
 total_msg = Table(db, 'total_msg', [
